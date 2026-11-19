@@ -28,8 +28,9 @@ k8slab은 강의와 책의 Vagrantfile을 그대로 읽어 VirtualBox에 쿠버�
   Vagrantfile 해석은 저장소들이 k8slabfile로 옮겨 가는 동안만 사용하는 호환 기능이다.
 - 실습 폴더마다 `k8slabfile` 하나로 관리한다(2026-11-19 저자 판정). 내용은 TOML 문법으로 작성한다. 다른 이름이나 별도
   설정 파일을 두지 않는다.
-- 폴더에 k8slabfile과 Vagrantfile이 모두 있으면 k8slabfile을 읽는다. 둘 중 1개만 있으면 그 파일을 읽는다. 옮기기가 끝난
-  폴더에서는 Vagrantfile을 지운다.
+- 폴더에 k8slabfile과 Vagrantfile이 모두 있으면 k8slabfile을 먼저 읽는다. 둘 중 1개만 있으면 그 파일을 읽는다.
+- 지금 있는 Vagrantfile은 따로 정하지 않으면 그대로 둔다. 강의 영상이 Vagrantfile 기준이라 지우면 수강생이 혼란스러울 수
+  있고 영상을 더 찍을지도 정해지지 않았다(2026-11-19 저자 판정). 언제 지울지는 저장소마다 상황에 따라 정한다.
 - Vagrantfile 해석기는 키우지 않는다. Ruby 함수처럼 해석기가 다루지 않는 문법을 사용하는 프로젝트는 k8slabfile로 옮긴다.
 - 내부 모델은 베이그런트의 개념(provider, forwarded_port 등)이 아니라 k8slab의 개념(노드, IP, SSH 포트, 디스크, 프로비저닝)으로
   둔다. Vagrantfile은 이 모델로 바꿔서 읽는다. 그래야 Vagrantfile 해석을 지워도 나머지가 그대로 남는다.

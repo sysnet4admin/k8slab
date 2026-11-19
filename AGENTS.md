@@ -15,6 +15,50 @@ k8slab은 강의와 책의 Vagrantfile을 그대로 읽어 VirtualBox에 쿠버�
 - 하위 명령과 옵션은 베이그런트와 같게 둔다. 수강생은 영상의 `vagrant up`에서, 연구 하네스는 스크립트의 `vagrant`에서
   프로그램 이름만 바꾸면 되게 하기 위해서다.
 
+## 현재 상태와 다음 할 일 (2026-11-20)
+
+### 옮길지는 베이그런트의 추이를 보고 정한다
+
+k8slab을 만든다고 강의와 책을 당장 모두 옮기는 것이 아니다. 베이그런트의 추이를 보고 정한다(저자 판정). 볼 것은 새 릴리스(MIT
+릴리스, Ruby 3.4.11 이상), macOS 26.7 이상에서 `vagrant up`이 실패하는 문제(hashicorp/vagrant#13845), 다음 VirtualBox 버전 지원,
+베이그런트에 들어 있는 Ruby 3.3의 지원 종료(2027-03-31)다. 다만 저자는 옮길 가능성이 높다고 본다. 베이그런트에 대한 신뢰가 이미
+한 번 꺾였고 기존에도 베이그런트의 사용자 경험이 좋지 않았기 때문이다. 수강생 질문과 답변을 분석해 이 판단에 보탠다.
+
+### 된 것
+
+- Vagrantfile 해석기: 대상 Vagrantfile 45개를 arm64, x86_64 각각 Ruby 실행 결과와 같게 읽는다(90건)
+- box 빌드(`box/`): amd64 2분 23초, arm64 2분 54초, 각 약 670 MB. arm64 box로 starter.kit 3~7장 전체 실습과 재시작을 확인했다
+- 워크플로: `ci.yml`(리눅스, macOS, Windows 시험), `release.yml`(실행 파일), `box.yml`(publish 없이 시험 실행 통과)
+
+### 다음 순서
+
+1. k8slabfile 형식(TOML 문법)과 `convert`(Vagrantfile을 k8slabfile로), `convert --check`(k8slabfile과 Vagrantfile이 같은 결과를 내는지)
+2. `up`: box 받기와 캐시, 한 번 가져와 연결 복제, 대역마다 호스트 전용 네트워크(192.168.1.0/24, 192.168.2.0/24), NAT와 SSH 포워딩
+   (포트가 겹치면 베이그런트의 auto_correct처럼 바꾸고 알린다), 대역 충돌 검사, 내장 SSH, 게스트 고정 IP(netplan, MAC으로 찾기),
+   프로비저닝(셸의 path, inline, args, env, reboot와 파일 복사)
+3. `halt`, `destroy`, `status`, `ssh`(`-c`), `snapshot save/restore/list`
+4. `v0.1.0` 릴리스와 Windows 확인(저자가 Windows PC에서 확인)
+
+`up`의 VirtualBox 동작은 `tools/reference/k8s-lab.sh`를 따른다. 베이그런트 없이 VM 4대, 고정 IP, MetalLB L2 접속, 재시작까지
+macOS(Apple Silicon)에서 확인한 셸 시제품이다. 확인한 것은 이렇다: box를 한 번 가져와 스냅숏을 만들고 연결 복제한다, macOS
+VirtualBox 7은 `hostonlynet`(Linux는 `hostonlyif`)을 사용한다, NIC2의 MAC을 IP마다 고정하고 netplan이 MAC으로 찾는다,
+`clonevm --groups`는 반영되지 않아 `modifyvm --groups`로 지정한다, `ssh`가 반복문의 표준 입력을 읽지 않게 한다.
+
+### 알아 둘 것
+
+- arm64에서는 `if ARCH == "arm64"` 분기 때문에 VMware 설정만 남는 VM이 12대 있다(prom 강의의 harbor 실습 등). VirtualBox 설정이
+  없으면 VMware 설정의 CPU와 메모리를 사용한다.
+- define 없이 box만 지정한 Vagrantfile(2판 책 2.1.3)은 "default" VM이다. 포워딩 설정이 없으므로 베이그런트처럼 SSH를 2222번에서
+  시작해 빈 포트를 찾는다.
+- Windows에서 호스트 전용 어댑터를 만들 때는 관리자 권한(UAC)이 필요하다.
+
+### 저자가 할 일
+
+- box 게시용 secret 4개(`R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, `VG_BOX_TOKEN`). 방법은 `.github/workflows/box.yml`
+  맨 위에 있다.
+- box 신규 버전(1.1.0)의 첫 게시는 모든 수강생과 독자가 받으므로 amd64 box를 x86 기기에서, 2판 책 실습과 다른 강의 저장소를
+  확인한 뒤 정한다.
+
 ## 만드는 범위
 
 - 지금 목적(강의와 책, 연구 시험 클러스터)에 필요한 것만 만든다. 새 목적이 생기면 그때 이 저장소에 기능을 더한다. 미리
@@ -50,7 +94,7 @@ k8slab은 강의와 책의 Vagrantfile을 그대로 읽어 VirtualBox에 쿠버�
 | 위치 | 내용 |
 |---|---|
 | `src/` | k8slab 명령과 Vagrantfile 해석기 |
-| `tools/` | 정답 생성기(`oracle.rb`)와 시험 자료 스크립트 |
+| `tools/` | 정답 생성기(`oracle.rb`), 시험 자료 스크립트, `up` 구현의 참고인 셸 시제품(`reference/k8s-lab.sh`) |
 | `box/` | `sysnet4admin/Ubuntu-k8s` box 빌드와 게시. 클라우드 이미지를 chroot로 설정하고 VM을 띄우지 않는다(`box/README.md`) |
 | `.github/workflows/ci.yml` | 리눅스, macOS, Windows에서 시험하고 정답이 oracle과 같은지 확인한다 |
 | `.github/workflows/release.yml` | `v*` 태그에서 macOS(arm64, x86_64)와 Windows 실행 파일을 Releases에 올린다 |

@@ -1,0 +1,324 @@
+{
+  "machines": [
+    {
+      "name": "cp-k8s-1.35.1",
+      "networks": [
+        {
+          "type": "private_network",
+          "ip": "192.168.1.10"
+        },
+        {
+          "type": "forwarded_port",
+          "guest": 22,
+          "host": 60010,
+          "auto_correct": true,
+          "id": "ssh"
+        }
+      ],
+      "synced_folders": [
+        {
+          "src": "../data",
+          "dst": "/vagrant",
+          "disabled": true
+        }
+      ],
+      "providers": {
+        "vmware_desktop": {
+          "customize": [
+
+          ],
+          "gui": true,
+          "cpus": 2,
+          "memory": 2048
+        }
+      },
+      "provisions": [
+        {
+          "type": "shell",
+          "path": "k8s_env_build.sh",
+          "args": [
+            "4",
+            "1.35",
+            "192.168.1.10"
+          ]
+        },
+        {
+          "type": "shell",
+          "path": "k8s_pkg_cfg.sh",
+          "args": [
+            "1.35.1-1.1",
+            "1.6.28-1",
+            "CP"
+          ]
+        },
+        {
+          "type": "shell",
+          "path": "controlplane_node.sh",
+          "args": [
+            "192.168.1.10",
+            "1.35.1"
+          ]
+        },
+        {
+          "type": "shell",
+          "path": "extra_k8s_pkgs.sh"
+        }
+      ],
+      "box": "sysnet4admin/Ubuntu-k8s",
+      "box_url": "https://box.kuberneteslab.dev/sysnet4admin/Ubuntu-k8s",
+      "hostname": "cp-k8s"
+    },
+    {
+      "name": "w1-k8s-1.35.1",
+      "networks": [
+        {
+          "type": "private_network",
+          "ip": "192.168.1.101"
+        },
+        {
+          "type": "forwarded_port",
+          "guest": 22,
+          "host": 60101,
+          "auto_correct": true,
+          "id": "ssh"
+        }
+      ],
+      "synced_folders": [
+        {
+          "src": "../data",
+          "dst": "/vagrant",
+          "disabled": true
+        }
+      ],
+      "providers": {
+        "vmware_desktop": {
+          "customize": [
+
+          ],
+          "gui": true,
+          "cpus": 1,
+          "memory": 1536
+        }
+      },
+      "provisions": [
+        {
+          "type": "shell",
+          "path": "k8s_env_build.sh",
+          "args": [
+            "4",
+            "1.35",
+            "192.168.1.10"
+          ]
+        },
+        {
+          "type": "shell",
+          "path": "k8s_pkg_cfg.sh",
+          "args": [
+            "1.35.1-1.1",
+            "1.6.28-1",
+            "W"
+          ]
+        },
+        {
+          "type": "shell",
+          "path": "worker_nodes.sh",
+          "args": [
+            "192.168.1.10"
+          ]
+        }
+      ],
+      "box": "sysnet4admin/Ubuntu-k8s",
+      "box_url": "https://box.kuberneteslab.dev/sysnet4admin/Ubuntu-k8s",
+      "hostname": "w1-k8s"
+    },
+    {
+      "name": "w2-k8s-1.35.1",
+      "networks": [
+        {
+          "type": "private_network",
+          "ip": "192.168.1.102"
+        },
+        {
+          "type": "forwarded_port",
+          "guest": 22,
+          "host": 60102,
+          "auto_correct": true,
+          "id": "ssh"
+        }
+      ],
+      "synced_folders": [
+        {
+          "src": "../data",
+          "dst": "/vagrant",
+          "disabled": true
+        }
+      ],
+      "providers": {
+        "vmware_desktop": {
+          "customize": [
+
+          ],
+          "gui": true,
+          "cpus": 1,
+          "memory": 1536
+        }
+      },
+      "provisions": [
+        {
+          "type": "shell",
+          "path": "k8s_env_build.sh",
+          "args": [
+            "4",
+            "1.35",
+            "192.168.1.10"
+          ]
+        },
+        {
+          "type": "shell",
+          "path": "k8s_pkg_cfg.sh",
+          "args": [
+            "1.35.1-1.1",
+            "1.6.28-1",
+            "W"
+          ]
+        },
+        {
+          "type": "shell",
+          "path": "worker_nodes.sh",
+          "args": [
+            "192.168.1.10"
+          ]
+        }
+      ],
+      "box": "sysnet4admin/Ubuntu-k8s",
+      "box_url": "https://box.kuberneteslab.dev/sysnet4admin/Ubuntu-k8s",
+      "hostname": "w2-k8s"
+    },
+    {
+      "name": "w3-k8s-1.35.1",
+      "networks": [
+        {
+          "type": "private_network",
+          "ip": "192.168.1.103"
+        },
+        {
+          "type": "forwarded_port",
+          "guest": 22,
+          "host": 60103,
+          "auto_correct": true,
+          "id": "ssh"
+        }
+      ],
+      "synced_folders": [
+        {
+          "src": "../data",
+          "dst": "/vagrant",
+          "disabled": true
+        }
+      ],
+      "providers": {
+        "vmware_desktop": {
+          "customize": [
+
+          ],
+          "gui": true,
+          "cpus": 1,
+          "memory": 1536
+        }
+      },
+      "provisions": [
+        {
+          "type": "shell",
+          "path": "k8s_env_build.sh",
+          "args": [
+            "4",
+            "1.35",
+            "192.168.1.10"
+          ]
+        },
+        {
+          "type": "shell",
+          "path": "k8s_pkg_cfg.sh",
+          "args": [
+            "1.35.1-1.1",
+            "1.6.28-1",
+            "W"
+          ]
+        },
+        {
+          "type": "shell",
+          "path": "worker_nodes.sh",
+          "args": [
+            "192.168.1.10"
+          ]
+        }
+      ],
+      "box": "sysnet4admin/Ubuntu-k8s",
+      "box_url": "https://box.kuberneteslab.dev/sysnet4admin/Ubuntu-k8s",
+      "hostname": "w3-k8s"
+    },
+    {
+      "name": "w4-k8s-1.35.1",
+      "networks": [
+        {
+          "type": "private_network",
+          "ip": "192.168.1.104"
+        },
+        {
+          "type": "forwarded_port",
+          "guest": 22,
+          "host": 60104,
+          "auto_correct": true,
+          "id": "ssh"
+        }
+      ],
+      "synced_folders": [
+        {
+          "src": "../data",
+          "dst": "/vagrant",
+          "disabled": true
+        }
+      ],
+      "providers": {
+        "vmware_desktop": {
+          "customize": [
+
+          ],
+          "gui": true,
+          "cpus": 1,
+          "memory": 1536
+        }
+      },
+      "provisions": [
+        {
+          "type": "shell",
+          "path": "k8s_env_build.sh",
+          "args": [
+            "4",
+            "1.35",
+            "192.168.1.10"
+          ]
+        },
+        {
+          "type": "shell",
+          "path": "k8s_pkg_cfg.sh",
+          "args": [
+            "1.35.1-1.1",
+            "1.6.28-1",
+            "W"
+          ]
+        },
+        {
+          "type": "shell",
+          "path": "worker_nodes.sh",
+          "args": [
+            "192.168.1.10"
+          ]
+        }
+      ],
+      "box": "sysnet4admin/Ubuntu-k8s",
+      "box_url": "https://box.kuberneteslab.dev/sysnet4admin/Ubuntu-k8s",
+      "hostname": "w4-k8s"
+    }
+  ]
+}

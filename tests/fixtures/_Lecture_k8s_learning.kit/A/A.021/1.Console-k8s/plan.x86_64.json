@@ -1,0 +1,65 @@
+{
+  "machines": [
+    {
+      "name": "console-k8s",
+      "networks": [
+        {
+          "type": "private_network",
+          "ip": "192.168.1.241"
+        },
+        {
+          "type": "forwarded_port",
+          "guest": 22,
+          "host": 60241,
+          "auto_correct": true,
+          "id": "ssh"
+        }
+      ],
+      "synced_folders": [
+        {
+          "src": "../data",
+          "dst": "/vagrant",
+          "disabled": true
+        }
+      ],
+      "providers": {
+        "virtualbox": {
+          "customize": [
+            [
+              "modifyvm",
+              ":id",
+              "--groups",
+              "/k8s-dev-tools(github_SysNet4Admin)"
+            ]
+          ],
+          "name": "console-k8s(github_SysNet4Admin)",
+          "cpus": 1,
+          "memory": 1024
+        }
+      },
+      "provisions": [
+        {
+          "type": "shell",
+          "path": "k8s_pkg_cfg.sh",
+          "args": [
+            "1.24.0-00",
+            "5:20.10.15~3-0~ubuntu-focal",
+            "1.6.4-1"
+          ]
+        },
+        {
+          "type": "file",
+          "source": "grab_kubeconfig.sh",
+          "destination": "/tmp/grab_kubeconfig.sh"
+        },
+        {
+          "type": "shell",
+          "inline": "chmod 744 /tmp/grab_kubeconfig.sh ; mv /tmp/grab_kubeconfig.sh /root/grab_kubeconfig.sh"
+        }
+      ],
+      "box": "sysnet4admin/Ubuntu-k8s",
+      "box_url": "https://box.kuberneteslab.dev/sysnet4admin/Ubuntu-k8s",
+      "hostname": "console-k8s"
+    }
+  ]
+}

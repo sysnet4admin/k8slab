@@ -1,0 +1,519 @@
+{
+  "machines": [
+    {
+      "name": "cp11-k8s",
+      "networks": [
+        {
+          "type": "private_network",
+          "ip": "192.168.1.11"
+        },
+        {
+          "type": "forwarded_port",
+          "guest": 22,
+          "host": 60011,
+          "auto_correct": true,
+          "id": "ssh"
+        }
+      ],
+      "synced_folders": [
+        {
+          "src": "../data",
+          "dst": "/vagrant",
+          "disabled": true
+        }
+      ],
+      "providers": {
+        "virtualbox": {
+          "customize": [
+            [
+              "modifyvm",
+              ":id",
+              "--groups",
+              "/k8s-MtpCP-kubespray(github_SysNet4Admin)"
+            ]
+          ],
+          "name": "cp11-k8s(github_SysNet4Admin)",
+          "cpus": 4,
+          "memory": 2048
+        }
+      },
+      "provisions": [
+        {
+          "type": "file",
+          "source": "auto_pass.sh",
+          "destination": "auto_pass.sh"
+        },
+        {
+          "type": "shell",
+          "path": "config.sh",
+          "args": [
+            "3",
+            "6"
+          ]
+        },
+        {
+          "type": "shell",
+          "path": "cp11-k8s-console.sh",
+          "args": [
+            "1"
+          ]
+        },
+        {
+          "type": "shell",
+          "path": "pre-kubespray.sh"
+        }
+      ],
+      "box": "sysnet4admin/Ubuntu-k8s",
+      "box_url": "https://box.kuberneteslab.dev/sysnet4admin/Ubuntu-k8s",
+      "hostname": "cp11-k8s"
+    },
+    {
+      "name": "cp12-k8s",
+      "networks": [
+        {
+          "type": "private_network",
+          "ip": "192.168.1.12"
+        },
+        {
+          "type": "forwarded_port",
+          "guest": 22,
+          "host": 60012,
+          "auto_correct": true,
+          "id": "ssh"
+        }
+      ],
+      "synced_folders": [
+        {
+          "src": "../data",
+          "dst": "/vagrant",
+          "disabled": true
+        }
+      ],
+      "providers": {
+        "virtualbox": {
+          "customize": [
+            [
+              "modifyvm",
+              ":id",
+              "--groups",
+              "/k8s-MtpCP-kubespray(github_SysNet4Admin)"
+            ]
+          ],
+          "name": "cp12-k8s(github_SysNet4Admin)",
+          "cpus": 4,
+          "memory": 2048
+        }
+      },
+      "provisions": [
+        {
+          "type": "file",
+          "source": "auto_pass.sh",
+          "destination": "auto_pass.sh"
+        },
+        {
+          "type": "shell",
+          "path": "config.sh",
+          "args": [
+            "3",
+            "6"
+          ]
+        }
+      ],
+      "box": "sysnet4admin/Ubuntu-k8s",
+      "box_url": "https://box.kuberneteslab.dev/sysnet4admin/Ubuntu-k8s",
+      "hostname": "cp12-k8s"
+    },
+    {
+      "name": "cp13-k8s",
+      "networks": [
+        {
+          "type": "private_network",
+          "ip": "192.168.1.13"
+        },
+        {
+          "type": "forwarded_port",
+          "guest": 22,
+          "host": 60013,
+          "auto_correct": true,
+          "id": "ssh"
+        }
+      ],
+      "synced_folders": [
+        {
+          "src": "../data",
+          "dst": "/vagrant",
+          "disabled": true
+        }
+      ],
+      "providers": {
+        "virtualbox": {
+          "customize": [
+            [
+              "modifyvm",
+              ":id",
+              "--groups",
+              "/k8s-MtpCP-kubespray(github_SysNet4Admin)"
+            ]
+          ],
+          "name": "cp13-k8s(github_SysNet4Admin)",
+          "cpus": 4,
+          "memory": 2048
+        }
+      },
+      "provisions": [
+        {
+          "type": "file",
+          "source": "auto_pass.sh",
+          "destination": "auto_pass.sh"
+        },
+        {
+          "type": "shell",
+          "path": "config.sh",
+          "args": [
+            "3",
+            "6"
+          ]
+        }
+      ],
+      "box": "sysnet4admin/Ubuntu-k8s",
+      "box_url": "https://box.kuberneteslab.dev/sysnet4admin/Ubuntu-k8s",
+      "hostname": "cp13-k8s"
+    },
+    {
+      "name": "w101-k8s",
+      "networks": [
+        {
+          "type": "private_network",
+          "ip": "192.168.1.101"
+        },
+        {
+          "type": "forwarded_port",
+          "guest": 22,
+          "host": 60101,
+          "auto_correct": true,
+          "id": "ssh"
+        }
+      ],
+      "synced_folders": [
+        {
+          "src": "../data",
+          "dst": "/vagrant",
+          "disabled": true
+        }
+      ],
+      "providers": {
+        "virtualbox": {
+          "customize": [
+            [
+              "modifyvm",
+              ":id",
+              "--groups",
+              "/k8s-MtpCP-kubespray(github_SysNet4Admin)"
+            ]
+          ],
+          "name": "w101-k8s(github_SysNet4Admin)",
+          "cpus": 1,
+          "memory": 1280
+        }
+      },
+      "provisions": [
+        {
+          "type": "file",
+          "source": "auto_pass.sh",
+          "destination": "auto_pass.sh"
+        },
+        {
+          "type": "shell",
+          "path": "config.sh",
+          "args": [
+            "3",
+            "6"
+          ]
+        }
+      ],
+      "box": "sysnet4admin/Ubuntu-k8s",
+      "box_url": "https://box.kuberneteslab.dev/sysnet4admin/Ubuntu-k8s",
+      "hostname": "w101-k8s"
+    },
+    {
+      "name": "w102-k8s",
+      "networks": [
+        {
+          "type": "private_network",
+          "ip": "192.168.1.102"
+        },
+        {
+          "type": "forwarded_port",
+          "guest": 22,
+          "host": 60102,
+          "auto_correct": true,
+          "id": "ssh"
+        }
+      ],
+      "synced_folders": [
+        {
+          "src": "../data",
+          "dst": "/vagrant",
+          "disabled": true
+        }
+      ],
+      "providers": {
+        "virtualbox": {
+          "customize": [
+            [
+              "modifyvm",
+              ":id",
+              "--groups",
+              "/k8s-MtpCP-kubespray(github_SysNet4Admin)"
+            ]
+          ],
+          "name": "w102-k8s(github_SysNet4Admin)",
+          "cpus": 1,
+          "memory": 1280
+        }
+      },
+      "provisions": [
+        {
+          "type": "file",
+          "source": "auto_pass.sh",
+          "destination": "auto_pass.sh"
+        },
+        {
+          "type": "shell",
+          "path": "config.sh",
+          "args": [
+            "3",
+            "6"
+          ]
+        }
+      ],
+      "box": "sysnet4admin/Ubuntu-k8s",
+      "box_url": "https://box.kuberneteslab.dev/sysnet4admin/Ubuntu-k8s",
+      "hostname": "w102-k8s"
+    },
+    {
+      "name": "w103-k8s",
+      "networks": [
+        {
+          "type": "private_network",
+          "ip": "192.168.1.103"
+        },
+        {
+          "type": "forwarded_port",
+          "guest": 22,
+          "host": 60103,
+          "auto_correct": true,
+          "id": "ssh"
+        }
+      ],
+      "synced_folders": [
+        {
+          "src": "../data",
+          "dst": "/vagrant",
+          "disabled": true
+        }
+      ],
+      "providers": {
+        "virtualbox": {
+          "customize": [
+            [
+              "modifyvm",
+              ":id",
+              "--groups",
+              "/k8s-MtpCP-kubespray(github_SysNet4Admin)"
+            ]
+          ],
+          "name": "w103-k8s(github_SysNet4Admin)",
+          "cpus": 1,
+          "memory": 1280
+        }
+      },
+      "provisions": [
+        {
+          "type": "file",
+          "source": "auto_pass.sh",
+          "destination": "auto_pass.sh"
+        },
+        {
+          "type": "shell",
+          "path": "config.sh",
+          "args": [
+            "3",
+            "6"
+          ]
+        }
+      ],
+      "box": "sysnet4admin/Ubuntu-k8s",
+      "box_url": "https://box.kuberneteslab.dev/sysnet4admin/Ubuntu-k8s",
+      "hostname": "w103-k8s"
+    },
+    {
+      "name": "w104-k8s",
+      "networks": [
+        {
+          "type": "private_network",
+          "ip": "192.168.1.104"
+        },
+        {
+          "type": "forwarded_port",
+          "guest": 22,
+          "host": 60104,
+          "auto_correct": true,
+          "id": "ssh"
+        }
+      ],
+      "synced_folders": [
+        {
+          "src": "../data",
+          "dst": "/vagrant",
+          "disabled": true
+        }
+      ],
+      "providers": {
+        "virtualbox": {
+          "customize": [
+            [
+              "modifyvm",
+              ":id",
+              "--groups",
+              "/k8s-MtpCP-kubespray(github_SysNet4Admin)"
+            ]
+          ],
+          "name": "w104-k8s(github_SysNet4Admin)",
+          "cpus": 1,
+          "memory": 1280
+        }
+      },
+      "provisions": [
+        {
+          "type": "file",
+          "source": "auto_pass.sh",
+          "destination": "auto_pass.sh"
+        },
+        {
+          "type": "shell",
+          "path": "config.sh",
+          "args": [
+            "3",
+            "6"
+          ]
+        }
+      ],
+      "box": "sysnet4admin/Ubuntu-k8s",
+      "box_url": "https://box.kuberneteslab.dev/sysnet4admin/Ubuntu-k8s",
+      "hostname": "w104-k8s"
+    },
+    {
+      "name": "w105-k8s",
+      "networks": [
+        {
+          "type": "private_network",
+          "ip": "192.168.1.105"
+        },
+        {
+          "type": "forwarded_port",
+          "guest": 22,
+          "host": 60105,
+          "auto_correct": true,
+          "id": "ssh"
+        }
+      ],
+      "synced_folders": [
+        {
+          "src": "../data",
+          "dst": "/vagrant",
+          "disabled": true
+        }
+      ],
+      "providers": {
+        "virtualbox": {
+          "customize": [
+            [
+              "modifyvm",
+              ":id",
+              "--groups",
+              "/k8s-MtpCP-kubespray(github_SysNet4Admin)"
+            ]
+          ],
+          "name": "w105-k8s(github_SysNet4Admin)",
+          "cpus": 1,
+          "memory": 1280
+        }
+      },
+      "provisions": [
+        {
+          "type": "file",
+          "source": "auto_pass.sh",
+          "destination": "auto_pass.sh"
+        },
+        {
+          "type": "shell",
+          "path": "config.sh",
+          "args": [
+            "3",
+            "6"
+          ]
+        }
+      ],
+      "box": "sysnet4admin/Ubuntu-k8s",
+      "box_url": "https://box.kuberneteslab.dev/sysnet4admin/Ubuntu-k8s",
+      "hostname": "w105-k8s"
+    },
+    {
+      "name": "w106-k8s",
+      "networks": [
+        {
+          "type": "private_network",
+          "ip": "192.168.1.106"
+        },
+        {
+          "type": "forwarded_port",
+          "guest": 22,
+          "host": 60106,
+          "auto_correct": true,
+          "id": "ssh"
+        }
+      ],
+      "synced_folders": [
+        {
+          "src": "../data",
+          "dst": "/vagrant",
+          "disabled": true
+        }
+      ],
+      "providers": {
+        "virtualbox": {
+          "customize": [
+            [
+              "modifyvm",
+              ":id",
+              "--groups",
+              "/k8s-MtpCP-kubespray(github_SysNet4Admin)"
+            ]
+          ],
+          "name": "w106-k8s(github_SysNet4Admin)",
+          "cpus": 1,
+          "memory": 1280
+        }
+      },
+      "provisions": [
+        {
+          "type": "file",
+          "source": "auto_pass.sh",
+          "destination": "auto_pass.sh"
+        },
+        {
+          "type": "shell",
+          "path": "config.sh",
+          "args": [
+            "3",
+            "6"
+          ]
+        }
+      ],
+      "box": "sysnet4admin/Ubuntu-k8s",
+      "box_url": "https://box.kuberneteslab.dev/sysnet4admin/Ubuntu-k8s",
+      "hostname": "w106-k8s"
+    }
+  ]
+}

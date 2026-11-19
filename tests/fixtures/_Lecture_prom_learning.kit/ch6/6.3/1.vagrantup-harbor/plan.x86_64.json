@@ -1,0 +1,55 @@
+{
+  "machines": [
+    {
+      "name": "harbor",
+      "networks": [
+        {
+          "type": "private_network",
+          "ip": "192.168.1.63"
+        },
+        {
+          "type": "forwarded_port",
+          "guest": 22,
+          "host": 60063,
+          "auto_correct": true,
+          "id": "ssh"
+        }
+      ],
+      "synced_folders": [
+        {
+          "src": "../data",
+          "dst": "/vagrant",
+          "disabled": true
+        }
+      ],
+      "providers": {
+        "virtualbox": {
+          "customize": [
+            [
+              "modifyvm",
+              ":id",
+              "--groups",
+              "/Prometheus-ext-node(github_SysNet4Admin)"
+            ]
+          ],
+          "name": "6.3.harbor(github_SysNet4Admin)",
+          "cpus": 1,
+          "memory": 2048
+        }
+      },
+      "provisions": [
+        {
+          "type": "shell",
+          "path": "harbor_config.sh",
+          "args": [
+            "5:26.1.3-1~ubuntu.24.04~noble",
+            "2.2.2-1~ubuntu.24.04~noble"
+          ]
+        }
+      ],
+      "box": "sysnet4admin/Ubuntu-k8s",
+      "box_url": "https://box.kuberneteslab.dev/sysnet4admin/Ubuntu-k8s",
+      "hostname": "harbor"
+    }
+  ]
+}

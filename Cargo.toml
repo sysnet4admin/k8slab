@@ -1,0 +1,15 @@
+[package]
+name = "k8slab"
+version = "0.1.0"
+edition = "2021"
+description = "Vagrantfile을 읽어 VirtualBox에 쿠버네티스 실습 환경을 만든다(베이그런트 없이)"
+license = "MIT"
+repository = "https://github.com/sysnet4admin/k8slab"
+
+[dependencies]
+clap = { version = "4", features = ["derive"] }
+serde_json = "1"
+
+[profile.release]
+strip = true
+lto = true

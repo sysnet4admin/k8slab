@@ -1,0 +1,59 @@
+{
+  "machines": [
+    {
+      "name": "kwok-cluster",
+      "networks": [
+        {
+          "type": "private_network",
+          "ip": "192.168.1.202"
+        },
+        {
+          "type": "forwarded_port",
+          "guest": 22,
+          "host": 60202,
+          "auto_correct": true,
+          "id": "ssh"
+        }
+      ],
+      "synced_folders": [
+        {
+          "src": "../data",
+          "dst": "/vagrant",
+          "disabled": true
+        }
+      ],
+      "providers": {
+        "virtualbox": {
+          "customize": [
+            [
+              "modifyvm",
+              ":id",
+              "--groups",
+              "/k8s-demo-set(github_SysNet4Admin)"
+            ]
+          ],
+          "name": "kwok-cluster",
+          "cpus": 1,
+          "memory": 1024
+        }
+      },
+      "provisions": [
+        {
+          "type": "shell",
+          "path": "kwok-build.sh",
+          "args": [
+            "1.26.00-00",
+            "5:29.3.1-1~ubuntu.24.04~noble",
+            "1.6.18-1"
+          ],
+          "env": {
+            "PATH": "$PATH:/usr/local/bin"
+          }
+        }
+      ],
+      "box": "sysnet4admin/Ubuntu-k8s",
+      "box_url": "https://box.kuberneteslab.dev/sysnet4admin/Ubuntu-k8s",
+      "hostname": "kwok-cluster"
+    }
+  ]
+}

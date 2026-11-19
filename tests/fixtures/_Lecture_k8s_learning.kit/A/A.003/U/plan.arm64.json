@@ -1,0 +1,263 @@
+{
+  "machines": [
+    {
+      "name": "m-k8s-1.24.8",
+      "networks": [
+        {
+          "type": "private_network",
+          "ip": "192.168.1.10"
+        },
+        {
+          "type": "forwarded_port",
+          "guest": 22,
+          "host": 60010,
+          "auto_correct": true,
+          "id": "ssh"
+        }
+      ],
+      "synced_folders": [
+        {
+          "src": "../data",
+          "dst": "/vagrant",
+          "disabled": true
+        }
+      ],
+      "providers": {
+        "virtualbox": {
+          "customize": [
+            [
+              "modifyvm",
+              ":id",
+              "--groups",
+              "/k8s-U1.24.8-ctrd-1.6(github_SysNet4Admin)"
+            ]
+          ],
+          "name": "m-k8s-1.24.8(github_SysNet4Admin)",
+          "cpus": 2,
+          "memory": 2048
+        }
+      },
+      "provisions": [
+        {
+          "type": "shell",
+          "path": "k8s_env_build.sh",
+          "args": [
+            "3"
+          ]
+        },
+        {
+          "type": "shell",
+          "path": "k8s_pkg_cfg.sh",
+          "args": [
+            "1.24.8-00",
+            "5:29.3.1-1~ubuntu.24.04~noble",
+            "1.6.8-1",
+            "M"
+          ]
+        },
+        {
+          "type": "shell",
+          "path": "master_node.sh",
+          "args": [
+            "1.24.8"
+          ]
+        }
+      ],
+      "box": "sysnet4admin/Ubuntu-k8s",
+      "box_url": "https://box.kuberneteslab.dev/sysnet4admin/Ubuntu-k8s",
+      "hostname": "m-k8s"
+    },
+    {
+      "name": "w1-k8s-1.24.8",
+      "networks": [
+        {
+          "type": "private_network",
+          "ip": "192.168.1.101"
+        },
+        {
+          "type": "forwarded_port",
+          "guest": 22,
+          "host": 60101,
+          "auto_correct": true,
+          "id": "ssh"
+        }
+      ],
+      "synced_folders": [
+        {
+          "src": "../data",
+          "dst": "/vagrant",
+          "disabled": true
+        }
+      ],
+      "providers": {
+        "virtualbox": {
+          "customize": [
+            [
+              "modifyvm",
+              ":id",
+              "--groups",
+              "/k8s-U1.24.8-ctrd-1.6(github_SysNet4Admin)"
+            ]
+          ],
+          "name": "w1-k8s-1.24.8(github_SysNet4Admin)",
+          "cpus": 1,
+          "memory": 2048
+        }
+      },
+      "provisions": [
+        {
+          "type": "shell",
+          "path": "k8s_env_build.sh",
+          "args": [
+            "3"
+          ]
+        },
+        {
+          "type": "shell",
+          "path": "k8s_pkg_cfg.sh",
+          "args": [
+            "1.24.8-00",
+            "5:29.3.1-1~ubuntu.24.04~noble",
+            "1.6.8-1",
+            "W"
+          ]
+        },
+        {
+          "type": "shell",
+          "path": "work_nodes.sh"
+        }
+      ],
+      "box": "sysnet4admin/Ubuntu-k8s",
+      "box_url": "https://box.kuberneteslab.dev/sysnet4admin/Ubuntu-k8s",
+      "hostname": "w1-k8s"
+    },
+    {
+      "name": "w2-k8s-1.24.8",
+      "networks": [
+        {
+          "type": "private_network",
+          "ip": "192.168.1.102"
+        },
+        {
+          "type": "forwarded_port",
+          "guest": 22,
+          "host": 60102,
+          "auto_correct": true,
+          "id": "ssh"
+        }
+      ],
+      "synced_folders": [
+        {
+          "src": "../data",
+          "dst": "/vagrant",
+          "disabled": true
+        }
+      ],
+      "providers": {
+        "virtualbox": {
+          "customize": [
+            [
+              "modifyvm",
+              ":id",
+              "--groups",
+              "/k8s-U1.24.8-ctrd-1.6(github_SysNet4Admin)"
+            ]
+          ],
+          "name": "w2-k8s-1.24.8(github_SysNet4Admin)",
+          "cpus": 1,
+          "memory": 2048
+        }
+      },
+      "provisions": [
+        {
+          "type": "shell",
+          "path": "k8s_env_build.sh",
+          "args": [
+            "3"
+          ]
+        },
+        {
+          "type": "shell",
+          "path": "k8s_pkg_cfg.sh",
+          "args": [
+            "1.24.8-00",
+            "5:29.3.1-1~ubuntu.24.04~noble",
+            "1.6.8-1",
+            "W"
+          ]
+        },
+        {
+          "type": "shell",
+          "path": "work_nodes.sh"
+        }
+      ],
+      "box": "sysnet4admin/Ubuntu-k8s",
+      "box_url": "https://box.kuberneteslab.dev/sysnet4admin/Ubuntu-k8s",
+      "hostname": "w2-k8s"
+    },
+    {
+      "name": "w3-k8s-1.24.8",
+      "networks": [
+        {
+          "type": "private_network",
+          "ip": "192.168.1.103"
+        },
+        {
+          "type": "forwarded_port",
+          "guest": 22,
+          "host": 60103,
+          "auto_correct": true,
+          "id": "ssh"
+        }
+      ],
+      "synced_folders": [
+        {
+          "src": "../data",
+          "dst": "/vagrant",
+          "disabled": true
+        }
+      ],
+      "providers": {
+        "virtualbox": {
+          "customize": [
+            [
+              "modifyvm",
+              ":id",
+              "--groups",
+              "/k8s-U1.24.8-ctrd-1.6(github_SysNet4Admin)"
+            ]
+          ],
+          "name": "w3-k8s-1.24.8(github_SysNet4Admin)",
+          "cpus": 1,
+          "memory": 2048
+        }
+      },
+      "provisions": [
+        {
+          "type": "shell",
+          "path": "k8s_env_build.sh",
+          "args": [
+            "3"
+          ]
+        },
+        {
+          "type": "shell",
+          "path": "k8s_pkg_cfg.sh",
+          "args": [
+            "1.24.8-00",
+            "5:29.3.1-1~ubuntu.24.04~noble",
+            "1.6.8-1",
+            "W"
+          ]
+        },
+        {
+          "type": "shell",
+          "path": "work_nodes.sh"
+        }
+      ],
+      "box": "sysnet4admin/Ubuntu-k8s",
+      "box_url": "https://box.kuberneteslab.dev/sysnet4admin/Ubuntu-k8s",
+      "hostname": "w3-k8s"
+    }
+  ]
+}

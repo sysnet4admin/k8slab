@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    name: test (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - run: cargo test --locked
+
+  oracle:
+    # 시험 정답(plan.<arch>.json)이 tools/oracle.rb로 다시 만든 결과와 같은지 확인한다.
+    # Ruby 버전마다 JSON 들여쓰기가 달라서 글자가 아니라 내용으로 비교한다.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+      - name: Compare expected plans with the oracle
+        run: |
+          fail=0
+          while IFS= read -r f; do
+            d=$(dirname "$f")
+            for a in arm64 x86_64; do
+              ruby tools/oracle.rb "$f" "$a" | ruby -rjson -e \
+                'exit(JSON.parse(File.read(ARGV[0])) == JSON.parse($stdin.read) ? 0 : 1)' "$d/plan.$a.json" \
+                || { echo "다름: $d ($a)"; fail=1; }
+            done
+          done < <(find tests/fixtures -name Vagrantfile | sort)
+          exit $fail

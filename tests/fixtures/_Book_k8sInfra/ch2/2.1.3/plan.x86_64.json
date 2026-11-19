@@ -1,0 +1,20 @@
+{
+  "machines": [
+    {
+      "name": "default",
+      "networks": [
+
+      ],
+      "synced_folders": [
+
+      ],
+      "providers": {
+      },
+      "provisions": [
+
+      ],
+      "box": "sysnet4admin/Ubuntu-k8s",
+      "box_url": "https://box.kuberneteslab.dev/sysnet4admin/Ubuntu-k8s"
+    }
+  ]
+}

@@ -1,0 +1,171 @@
+name: Box
+
+# Ubuntu 24.04 클라우드 이미지로 sysnet4admin/Ubuntu-k8s box를 만든다. VM을 띄우지 않는다(box/README.md).
+# publish를 켜면 R2와 vg-box/k8s Releases에 올리고 두 카탈로그(R2, GitHub Pages)에 새 버전을 더한다.
+# 기존 버전은 남긴다. publish를 끄면 box는 아티팩트로만 남고 바뀔 카탈로그를 실행 요약에 보여 준다.
+#
+# 필요한 secret(publish할 때만):
+#   R2_ACCOUNT_ID, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY  버킷 vg-box만 읽고 쓰는 R2 API 토큰
+#   VG_BOX_TOKEN                                           vg-box/k8s의 Contents 읽기와 쓰기 권한이 있는 토큰
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'box 버전(예: 1.1.0)'
+        required: true
+      publish:
+        description: 'R2와 GitHub에 올리고 카탈로그에 새 버전을 더한다'
+        type: boolean
+        default: false
+      description:
+        description: '카탈로그에 적을 버전 설명(비우면 빌드 정보로 만든다)'
+        required: false
+        default: ''
+
+env:
+  OWNER: sysnet4admin
+  NAME: Ubuntu-k8s
+  BUCKET: vg-box
+  ENTRY: https://box.kuberneteslab.dev
+
+jobs:
+  build:
+    name: Build (${{ matrix.arch }})
+    strategy:
+      fail-fast: true
+      matrix:
+        include:
+          - arch: arm64
+            runner: ubuntu-24.04-arm
+          - arch: amd64
+            runner: ubuntu-24.04
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install tools
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y qemu-utils cloud-guest-utils gdisk pigz zerofree
+
+      - name: Build box
+        run: sudo box/build.sh ${{ matrix.arch }} out
+
+      - name: Name the box
+        run: |
+          file="$NAME-${{ inputs.version }}-virtualbox-${{ matrix.arch }}.box"
+          sudo mv "out/ubuntu-24.04-${{ matrix.arch }}.virtualbox.box" "out/$file"
+          (cd out && sha256sum "$file" | sudo tee "$file.sha256")
+          sudo mv out/box-build-info "out/box-build-info.${{ matrix.arch }}"
+          cat out/summary.md >> "$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: box-${{ matrix.arch }}
+          path: |
+            out/*.box
+            out/*.box.sha256
+            out/box-build-info.*
+          retention-days: 7
+          compression-level: 0
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      VERSION: ${{ inputs.version }}
+      PUBLISH: ${{ inputs.publish }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          path: dl
+          merge-multiple: true
+
+      - name: Prepare catalogs
+        run: |
+          ls -l dl
+          sha() { cut -d' ' -f1 "dl/$NAME-$VERSION-virtualbox-$1.box.sha256"; }
+          desc="${{ inputs.description }}"
+          if [ -z "$desc" ]; then
+            desc="   - Built from the Ubuntu 24.04 cloud image without a VM (k8slab box/)
+             - $(tr '\n' ' ' < dl/box-build-info.arm64)"
+          fi
+          curl -fsSL "$ENTRY/$OWNER/$NAME" -o r2-current.json
+          curl -fsSL "https://vg-box.github.io/k8s/$OWNER/$NAME.json" -o pages-current.json
+          python3 box/publish_catalog.py --catalog r2-current.json --version "$VERSION" \
+            --url-template "$ENTRY/files/$OWNER/$NAME/{version}/$NAME-{version}-virtualbox-{arch}.box" \
+            --sha arm64="$(sha arm64)" --sha amd64="$(sha amd64)" --description "$desc" > r2-new.json
+          python3 box/publish_catalog.py --catalog pages-current.json --version "$VERSION" \
+            --url-template "https://github.com/vg-box/k8s/releases/download/$NAME-{version}/$NAME-{version}-virtualbox-{arch}.box" \
+            --sha arm64="$(sha arm64)" --sha amd64="$(sha amd64)" --description "$desc" > pages-new.json
+          {
+            echo "## 카탈로그 변경 (publish=$PUBLISH)"
+            echo '```diff'
+            diff -u r2-current.json r2-new.json || true
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload boxes to R2
+        if: inputs.publish
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: auto
+          R2_ENDPOINT: https://${{ secrets.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com
+        run: |
+          for arch in arm64 amd64; do
+            f="$NAME-$VERSION-virtualbox-$arch.box"
+            key="files/$OWNER/$NAME/$VERSION/$f"
+            aws s3 cp "dl/$f" "s3://$BUCKET/$key" --endpoint-url "$R2_ENDPOINT" \
+              --content-type application/octet-stream --cache-control "public, max-age=86400"
+            remote=$(aws s3api head-object --bucket "$BUCKET" --key "$key" --endpoint-url "$R2_ENDPOINT" --query ContentLength --output text)
+            [ "$remote" = "$(stat -c %s "dl/$f")" ] || { echo "R2 크기가 다르다: $key"; exit 1; }
+          done
+
+      - name: Upload boxes to vg-box/k8s Releases
+        if: inputs.publish
+        env:
+          GH_TOKEN: ${{ secrets.VG_BOX_TOKEN }}
+        run: |
+          tag="$NAME-$VERSION"
+          (cd dl && cat ./*.box.sha256 > SHA256SUMS)
+          files=(dl/*.box dl/SHA256SUMS)
+          if gh release view "$tag" -R vg-box/k8s >/dev/null 2>&1; then
+            gh release upload "$tag" "${files[@]}" -R vg-box/k8s --clobber
+          else
+            gh release create "$tag" "${files[@]}" -R vg-box/k8s --title "$tag" \
+              --notes "Vagrant box $tag. 파일은 같은 Release의 SHA256SUMS로 확인한다."
+          fi
+
+      - name: Switch catalogs (R2, GitHub Pages)
+        if: inputs.publish
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: auto
+          R2_ENDPOINT: https://${{ secrets.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com
+          VG_BOX_TOKEN: ${{ secrets.VG_BOX_TOKEN }}
+        run: |
+          aws s3 cp r2-new.json "s3://$BUCKET/$OWNER/$NAME" --endpoint-url "$R2_ENDPOINT" \
+            --content-type application/json --cache-control "public, max-age=300"
+          git clone -q "https://x-access-token:$VG_BOX_TOKEN@github.com/vg-box/k8s" pages
+          cp pages-new.json "pages/$OWNER/$NAME.json"
+          cd pages
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$OWNER/$NAME.json"
+          git commit -q -m "$NAME $VERSION 카탈로그 (k8slab box 워크플로)"
+          git push -q
+
+      - name: Verify
+        if: inputs.publish
+        run: |
+          curl -fsSI "$ENTRY/$OWNER/$NAME" | grep -i '^content-type: application/json'
+          curl -fsSL "$ENTRY/$OWNER/$NAME" | python3 -c "import json,sys; v=[x['version'] for x in json.load(sys.stdin)['versions']]; print(v); assert '$VERSION' in v"
+          for arch in arm64 amd64; do
+            curl -fsSI "$ENTRY/files/$OWNER/$NAME/$VERSION/$NAME-$VERSION-virtualbox-$arch.box" | grep -i '^content-length'
+          done

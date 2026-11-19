@@ -1,0 +1,411 @@
+<?xml version="1.0"?>
+<Envelope ovf:version="1.0" xml:lang="en-US" xmlns="http://schemas.dmtf.org/ovf/envelope/1" xmlns:ovf="http://schemas.dmtf.org/ovf/envelope/1" xmlns:rasd="http://schemas.dmtf.org/wbem/wscim/1/cim-schema/2/CIM_ResourceAllocationSettingData" xmlns:vssd="http://schemas.dmtf.org/wbem/wscim/1/cim-schema/2/CIM_VirtualSystemSettingData" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:vbox="http://www.virtualbox.org/ovf/machine">
+  <References>
+    <File ovf:id="file1" ovf:href="ubuntu-24.04-aarch64-disk001.vmdk"/>
+  </References>
+  <DiskSection>
+    <Info>List of the virtual disks used in the package</Info>
+    <Disk ovf:capacity="68719476736" ovf:diskId="vmdisk1" ovf:fileRef="file1" ovf:format="http://www.vmware.com/interfaces/specifications/vmdk.html#streamOptimized" vbox:uuid="32fff4be-28cc-4823-be4f-d0ea022f8532"/>
+  </DiskSection>
+  <NetworkSection>
+    <Info>Logical networks used in the package</Info>
+    <Network ovf:name="NAT">
+      <Description>Logical network used by this appliance.</Description>
+    </Network>
+  </NetworkSection>
+  <VirtualSystem ovf:id="ubuntu-24.04-aarch64">
+    <Info>A virtual machine</Info>
+    <OperatingSystemSection ovf:id="1">
+      <Info>The kind of installed guest operating system</Info>
+      <Description>Other</Description>
+      <vbox:OSType ovf:required="false">Ubuntu24_LTS_arm64</vbox:OSType>
+    </OperatingSystemSection>
+    <VirtualHardwareSection>
+      <Info>Virtual hardware requirements for a virtual machine</Info>
+      <System>
+        <vssd:ElementName>Virtual Hardware Family</vssd:ElementName>
+        <vssd:InstanceID>0</vssd:InstanceID>
+        <vssd:VirtualSystemIdentifier>ubuntu-24.04-aarch64</vssd:VirtualSystemIdentifier>
+        <vssd:VirtualSystemType>virtualbox-2.2</vssd:VirtualSystemType>
+      </System>
+      <Item>
+        <rasd:Caption>2 virtual CPU</rasd:Caption>
+        <rasd:Description>Number of virtual CPUs</rasd:Description>
+        <rasd:ElementName>2 virtual CPU</rasd:ElementName>
+        <rasd:InstanceID>1</rasd:InstanceID>
+        <rasd:ResourceType>3</rasd:ResourceType>
+        <rasd:VirtualQuantity>2</rasd:VirtualQuantity>
+      </Item>
+      <Item>
+        <rasd:AllocationUnits>MegaBytes</rasd:AllocationUnits>
+        <rasd:Caption>4096 MB of memory</rasd:Caption>
+        <rasd:Description>Memory Size</rasd:Description>
+        <rasd:ElementName>4096 MB of memory</rasd:ElementName>
+        <rasd:InstanceID>2</rasd:InstanceID>
+        <rasd:ResourceType>4</rasd:ResourceType>
+        <rasd:VirtualQuantity>4096</rasd:VirtualQuantity>
+      </Item>
+      <Item>
+        <rasd:Address>0</rasd:Address>
+        <rasd:Caption>virtioSCSIController0</rasd:Caption>
+        <rasd:Description>VirtioSCSI Controller</rasd:Description>
+        <rasd:ElementName>virtioSCSIController0</rasd:ElementName>
+        <rasd:InstanceID>3</rasd:InstanceID>
+        <rasd:ResourceSubType>VirtioSCSI</rasd:ResourceSubType>
+        <rasd:ResourceType>20</rasd:ResourceType>
+      </Item>
+      <Item>
+        <rasd:AddressOnParent>0</rasd:AddressOnParent>
+        <rasd:Caption>disk1</rasd:Caption>
+        <rasd:Description>Disk Image</rasd:Description>
+        <rasd:ElementName>disk1</rasd:ElementName>
+        <rasd:HostResource>/disk/vmdisk1</rasd:HostResource>
+        <rasd:InstanceID>4</rasd:InstanceID>
+        <rasd:Parent>3</rasd:Parent>
+        <rasd:ResourceType>17</rasd:ResourceType>
+      </Item>
+      <Item>
+        <rasd:AutomaticAllocation>true</rasd:AutomaticAllocation>
+        <rasd:Caption>Ethernet adapter on 'NAT'</rasd:Caption>
+        <rasd:Connection>NAT</rasd:Connection>
+        <rasd:ElementName>Ethernet adapter on 'NAT'</rasd:ElementName>
+        <rasd:InstanceID>5</rasd:InstanceID>
+        <rasd:ResourceSubType>E1000</rasd:ResourceSubType>
+        <rasd:ResourceType>10</rasd:ResourceType>
+      </Item>
+    </VirtualHardwareSection>
+    <vbox:Machine ovf:required="false" version="1.20-macosx" uuid="{7ca374fa-4bd2-4495-bc6d-6a1b406a685b}" name="ubuntu-24.04-aarch64" OSType="Ubuntu24_LTS_arm64" snapshotFolder="Snapshots" lastStateChange="2026-04-02T12:23:41Z">
+      <ovf:Info>Complete VirtualBox machine configuration in VirtualBox format</ovf:Info>
+      <Hardware>
+        <Memory RAMSize="4096"/>
+        <HID Pointing="USBMouse" Keyboard="USBKeyboard"/>
+        <Boot>
+          <Order position="1" device="HardDisk"/>
+          <Order position="2" device="DVD"/>
+          <Order position="3" device="None"/>
+          <Order position="4" device="None"/>
+        </Boot>
+        <Display controller="QemuRamFB" VRAMSize="33"/>
+        <RemoteDisplay enabled="true">
+          <VRDEProperties>
+            <Property name="Security/Method" value="TLS"/>
+            <Property name="TCP/Address" value="127.0.0.1"/>
+            <Property name="TCP/Ports" value="5958"/>
+          </VRDEProperties>
+        </RemoteDisplay>
+        <Firmware type="EFI">
+          <IOAPIC enabled="true"/>
+          <SmbiosUuidLittleEndian enabled="true"/>
+          <AutoSerialNumGen enabled="true"/>
+        </Firmware>
+        <USB>
+          <Controllers>
+            <Controller name="xHCI" type="XHCI"/>
+          </Controllers>
+        </USB>
+        <Network>
+          <Adapter slot="0" enabled="true" MACAddress="08002726B90E" type="82540EM">
+            <NAT localhost-reachable="true"/>
+          </Adapter>
+          <Adapter slot="8" cable="false">
+            <DisabledModes>
+              <NAT localhost-reachable="true"/>
+            </DisabledModes>
+          </Adapter>
+          <Adapter slot="9" cable="false">
+            <DisabledModes>
+              <NAT localhost-reachable="true"/>
+            </DisabledModes>
+          </Adapter>
+          <Adapter slot="10" cable="false">
+            <DisabledModes>
+              <NAT localhost-reachable="true"/>
+            </DisabledModes>
+          </Adapter>
+          <Adapter slot="11" cable="false">
+            <DisabledModes>
+              <NAT localhost-reachable="true"/>
+            </DisabledModes>
+          </Adapter>
+          <Adapter slot="12" cable="false">
+            <DisabledModes>
+              <NAT localhost-reachable="true"/>
+            </DisabledModes>
+          </Adapter>
+          <Adapter slot="13" cable="false">
+            <DisabledModes>
+              <NAT localhost-reachable="true"/>
+            </DisabledModes>
+          </Adapter>
+          <Adapter slot="14" cable="false">
+            <DisabledModes>
+              <NAT localhost-reachable="true"/>
+            </DisabledModes>
+          </Adapter>
+          <Adapter slot="15" cable="false">
+            <DisabledModes>
+              <NAT localhost-reachable="true"/>
+            </DisabledModes>
+          </Adapter>
+          <Adapter slot="16" cable="false">
+            <DisabledModes>
+              <NAT localhost-reachable="true"/>
+            </DisabledModes>
+          </Adapter>
+          <Adapter slot="17" cable="false">
+            <DisabledModes>
+              <NAT localhost-reachable="true"/>
+            </DisabledModes>
+          </Adapter>
+          <Adapter slot="18" cable="false">
+            <DisabledModes>
+              <NAT localhost-reachable="true"/>
+            </DisabledModes>
+          </Adapter>
+          <Adapter slot="19" cable="false">
+            <DisabledModes>
+              <NAT localhost-reachable="true"/>
+            </DisabledModes>
+          </Adapter>
+          <Adapter slot="20" cable="false">
+            <DisabledModes>
+              <NAT localhost-reachable="true"/>
+            </DisabledModes>
+          </Adapter>
+          <Adapter slot="21" cable="false">
+            <DisabledModes>
+              <NAT localhost-reachable="true"/>
+            </DisabledModes>
+          </Adapter>
+          <Adapter slot="22" cable="false">
+            <DisabledModes>
+              <NAT localhost-reachable="true"/>
+            </DisabledModes>
+          </Adapter>
+          <Adapter slot="23" cable="false">
+            <DisabledModes>
+              <NAT localhost-reachable="true"/>
+            </DisabledModes>
+          </Adapter>
+          <Adapter slot="24" cable="false">
+            <DisabledModes>
+              <NAT localhost-reachable="true"/>
+            </DisabledModes>
+          </Adapter>
+          <Adapter slot="25" cable="false">
+            <DisabledModes>
+              <NAT localhost-reachable="true"/>
+            </DisabledModes>
+          </Adapter>
+          <Adapter slot="26" cable="false">
+            <DisabledModes>
+              <NAT localhost-reachable="true"/>
+            </DisabledModes>
+          </Adapter>
+          <Adapter slot="27" cable="false">
+            <DisabledModes>
+              <NAT localhost-reachable="true"/>
+            </DisabledModes>
+          </Adapter>
+          <Adapter slot="28" cable="false">
+            <DisabledModes>
+              <NAT localhost-reachable="true"/>
+            </DisabledModes>
+          </Adapter>
+          <Adapter slot="29" cable="false">
+            <DisabledModes>
+              <NAT localhost-reachable="true"/>
+            </DisabledModes>
+          </Adapter>
+          <Adapter slot="30" cable="false">
+            <DisabledModes>
+              <NAT localhost-reachable="true"/>
+            </DisabledModes>
+          </Adapter>
+          <Adapter slot="31" cable="false">
+            <DisabledModes>
+              <NAT localhost-reachable="true"/>
+            </DisabledModes>
+          </Adapter>
+          <Adapter slot="32" cable="false">
+            <DisabledModes>
+              <NAT localhost-reachable="true"/>
+            </DisabledModes>
+          </Adapter>
+          <Adapter slot="33" cable="false">
+            <DisabledModes>
+              <NAT localhost-reachable="true"/>
+            </DisabledModes>
+          </Adapter>
+          <Adapter slot="34" cable="false">
+            <DisabledModes>
+              <NAT localhost-reachable="true"/>
+            </DisabledModes>
+          </Adapter>
+          <Adapter slot="35" cable="false">
+            <DisabledModes>
+              <NAT localhost-reachable="true"/>
+            </DisabledModes>
+          </Adapter>
+          <Adapter slot="36" cable="false">
+            <DisabledModes>
+              <NAT localhost-reachable="true"/>
+            </DisabledModes>
+          </Adapter>
+          <Adapter slot="37" cable="false">
+            <DisabledModes>
+              <NAT localhost-reachable="true"/>
+            </DisabledModes>
+          </Adapter>
+          <Adapter slot="38" cable="false">
+            <DisabledModes>
+              <NAT localhost-reachable="true"/>
+            </DisabledModes>
+          </Adapter>
+          <Adapter slot="39" cable="false">
+            <DisabledModes>
+              <NAT localhost-reachable="true"/>
+            </DisabledModes>
+          </Adapter>
+          <Adapter slot="40" cable="false">
+            <DisabledModes>
+              <NAT localhost-reachable="true"/>
+            </DisabledModes>
+          </Adapter>
+          <Adapter slot="41" cable="false">
+            <DisabledModes>
+              <NAT localhost-reachable="true"/>
+            </DisabledModes>
+          </Adapter>
+          <Adapter slot="42" cable="false">
+            <DisabledModes>
+              <NAT localhost-reachable="true"/>
+            </DisabledModes>
+          </Adapter>
+          <Adapter slot="43" cable="false">
+            <DisabledModes>
+              <NAT localhost-reachable="true"/>
+            </DisabledModes>
+          </Adapter>
+          <Adapter slot="44" cable="false">
+            <DisabledModes>
+              <NAT localhost-reachable="true"/>
+            </DisabledModes>
+          </Adapter>
+          <Adapter slot="45" cable="false">
+            <DisabledModes>
+              <NAT localhost-reachable="true"/>
+            </DisabledModes>
+          </Adapter>
+          <Adapter slot="46" cable="false">
+            <DisabledModes>
+              <NAT localhost-reachable="true"/>
+            </DisabledModes>
+          </Adapter>
+          <Adapter slot="47" cable="false">
+            <DisabledModes>
+              <NAT localhost-reachable="true"/>
+            </DisabledModes>
+          </Adapter>
+          <Adapter slot="48" cable="false">
+            <DisabledModes>
+              <NAT localhost-reachable="true"/>
+            </DisabledModes>
+          </Adapter>
+          <Adapter slot="49" cable="false">
+            <DisabledModes>
+              <NAT localhost-reachable="true"/>
+            </DisabledModes>
+          </Adapter>
+          <Adapter slot="50" cable="false">
+            <DisabledModes>
+              <NAT localhost-reachable="true"/>
+            </DisabledModes>
+          </Adapter>
+          <Adapter slot="51" cable="false">
+            <DisabledModes>
+              <NAT localhost-reachable="true"/>
+            </DisabledModes>
+          </Adapter>
+          <Adapter slot="52" cable="false">
+            <DisabledModes>
+              <NAT localhost-reachable="true"/>
+            </DisabledModes>
+          </Adapter>
+          <Adapter slot="53" cable="false">
+            <DisabledModes>
+              <NAT localhost-reachable="true"/>
+            </DisabledModes>
+          </Adapter>
+          <Adapter slot="54" cable="false">
+            <DisabledModes>
+              <NAT localhost-reachable="true"/>
+            </DisabledModes>
+          </Adapter>
+          <Adapter slot="55" cable="false">
+            <DisabledModes>
+              <NAT localhost-reachable="true"/>
+            </DisabledModes>
+          </Adapter>
+          <Adapter slot="56" cable="false">
+            <DisabledModes>
+              <NAT localhost-reachable="true"/>
+            </DisabledModes>
+          </Adapter>
+          <Adapter slot="57" cable="false">
+            <DisabledModes>
+              <NAT localhost-reachable="true"/>
+            </DisabledModes>
+          </Adapter>
+          <Adapter slot="58" cable="false">
+            <DisabledModes>
+              <NAT localhost-reachable="true"/>
+            </DisabledModes>
+          </Adapter>
+          <Adapter slot="59" cable="false">
+            <DisabledModes>
+              <NAT localhost-reachable="true"/>
+            </DisabledModes>
+          </Adapter>
+          <Adapter slot="60" cable="false">
+            <DisabledModes>
+              <NAT localhost-reachable="true"/>
+            </DisabledModes>
+          </Adapter>
+          <Adapter slot="61" cable="false">
+            <DisabledModes>
+              <NAT localhost-reachable="true"/>
+            </DisabledModes>
+          </Adapter>
+          <Adapter slot="62" cable="false">
+            <DisabledModes>
+              <NAT localhost-reachable="true"/>
+            </DisabledModes>
+          </Adapter>
+          <Adapter slot="63" cable="false">
+            <DisabledModes>
+              <NAT localhost-reachable="true"/>
+            </DisabledModes>
+          </Adapter>
+        </Network>
+        <AudioAdapter driver="Null"/>
+        <Clipboard/>
+        <GuestProperties>
+          <GuestProperty name="/VirtualBox/HostInfo/GUI/LanguageID" value="en_US" timestamp="1775132158229802000" flags="RDONLYGUEST"/>
+        </GuestProperties>
+        <StorageControllers>
+          <StorageController name="VirtIO Controller" type="VirtioSCSI" PortCount="14" useHostIOCache="false" Bootable="true">
+            <AttachedDevice type="HardDisk" hotpluggable="false" port="0" device="0">
+              <Image uuid="{32fff4be-28cc-4823-be4f-d0ea022f8532}"/>
+            </AttachedDevice>
+          </StorageController>
+        </StorageControllers>
+      </Hardware>
+      <Platform architecture="ARM">
+        <RTC localOrUTC="UTC"/>
+        <Chipset type="ARMv8Virtual"/>
+        <CPU count="2"/>
+      </Platform>
+    </vbox:Machine>
+  </VirtualSystem>
+</Envelope>

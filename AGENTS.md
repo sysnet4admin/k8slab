@@ -45,6 +45,20 @@ k8slab은 강의와 책의 Vagrantfile을 그대로 읽어 VirtualBox에 쿠버�
   `tools/oracle.rb`와 `src/vagrantfile/`를 같은 규칙으로 함께 수정한다. 한쪽만 수정하지 않는다.
 - define 없이 `config.vm`에 바로 설정하면 베이그런트처럼 "default" VM 하나로 본다. define과 함께 사용하는 경우는 지원하지 않는다.
 
+## 구성
+
+| 위치 | 내용 |
+|---|---|
+| `src/` | k8slab 명령과 Vagrantfile 해석기 |
+| `tools/` | 정답 생성기(`oracle.rb`)와 시험 자료 스크립트 |
+| `box/` | `sysnet4admin/Ubuntu-k8s` box 빌드와 게시. 클라우드 이미지를 chroot로 설정하고 VM을 띄우지 않는다(`box/README.md`) |
+| `.github/workflows/ci.yml` | 리눅스, macOS, Windows에서 시험하고 정답이 oracle과 같은지 확인한다 |
+| `.github/workflows/release.yml` | `v*` 태그에서 macOS(arm64, x86_64)와 Windows 실행 파일을 Releases에 올린다 |
+| `.github/workflows/box.yml` | box를 빌드한다. `publish`를 선택하면 R2와 vg-box/k8s에 올리고 카탈로그에 신규 버전을 더한다 |
+
+box를 받는 곳(`box.kuberneteslab.dev`의 R2, `vg-box/k8s`의 Releases와 Pages)은 이 저장소 밖에 있다. 이 주소는 강의 저장소와
+책에 이미 들어가 있어서 바꾸지 않는다.
+
 ## 확인
 
 ```bash

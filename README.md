@@ -17,8 +17,8 @@ k8slab destroy
 k8slab plan -f Vagrantfile --arch arm64   # 해석한 실행 계획을 JSON으로 보여 줍니다
 ```
 
-강의 저장소 4개와 『요즘 개발자를 위한 쿠버네티스/도커』(2판) 저장소에서 Ubuntu box를 사용하는 Vagrantfile 39개를 모두
-베이그런트와 같게 읽는지 시험합니다. 시험의 정답은 Vagrantfile을 실제 Ruby로 실행해서 만듭니다(`tools/oracle.rb`).
+강의 저장소 4개, 『요즘 개발자를 위한 쿠버네티스/도커』(2판) 저장소, 연구 저장소(`sysnet4admin/Research`)에서 Ubuntu box를
+사용하는 Vagrantfile 45개를 모두 베이그런트와 같게 읽는지 시험합니다. 시험의 정답은 Vagrantfile을 실제 Ruby로 실행해서 만듭니다(`tools/oracle.rb`).
 
 ## 지원 범위
 

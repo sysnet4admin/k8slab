@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# 강의와 책 저장소에서 Ubuntu box를 쓰는 Vagrantfile을 받아 tests/fixtures/를 다시 만든다.
+# 강의, 책, 연구(공개) 저장소에서 Ubuntu box를 사용하는 Vagrantfile을 받아 tests/fixtures/를 다시 만든다.
 # 정답(plan.<arch>.json)은 tools/oracle.rb(실제 Ruby)로 만든다.
 #
 #   tools/sync-fixtures.sh
@@ -14,6 +14,7 @@ REPOS=(
   SeongJuMoon/_Lecture_prom_learning.kit
   SeongJuMoon/_Lecture_graf_learning.kit
   internal-k8s/_Book_k8sInfra
+  sysnet4admin/Research
 )
 
 tmp=$(mktemp -d)

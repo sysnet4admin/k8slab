@@ -1,0 +1,200 @@
+{
+  "machines": [
+    {
+      "name": "cp-k8s-1.36.2",
+      "networks": [
+        {
+          "type": "private_network",
+          "ip": "192.168.2.150"
+        },
+        {
+          "type": "forwarded_port",
+          "guest": 22,
+          "host": 60250,
+          "auto_correct": true,
+          "id": "ssh"
+        }
+      ],
+      "synced_folders": [
+        {
+          "src": "../data",
+          "dst": "/vagrant",
+          "disabled": true
+        }
+      ],
+      "providers": {
+        "virtualbox": {
+          "customize": [
+            [
+              "modifyvm",
+              ":id",
+              "--groups",
+              "/mcp-migration"
+            ]
+          ],
+          "name": "cp-k8s-1.36.2-mcpmig",
+          "cpus": 2,
+          "memory": 4096
+        }
+      },
+      "provisions": [
+        {
+          "type": "shell",
+          "path": "k8s_env_build.sh",
+          "args": [
+            "2",
+            "1.36"
+          ]
+        },
+        {
+          "type": "shell",
+          "path": "k8s_pkg_cfg.sh",
+          "args": [
+            "1.36.2-2.1",
+            "2.2.3-1~ubuntu.24.04~noble",
+            "CP"
+          ]
+        },
+        {
+          "type": "shell",
+          "path": "controlplane_node.sh"
+        },
+        {
+          "type": "shell",
+          "path": "extra_k8s_pkgs.sh"
+        }
+      ],
+      "box": "sysnet4admin/Ubuntu-k8s",
+      "box_url": "https://box.kuberneteslab.dev/sysnet4admin/Ubuntu-k8s",
+      "hostname": "cp-k8s"
+    },
+    {
+      "name": "w1-k8s-1.36.2",
+      "networks": [
+        {
+          "type": "private_network",
+          "ip": "192.168.2.151"
+        },
+        {
+          "type": "forwarded_port",
+          "guest": 22,
+          "host": 60251,
+          "auto_correct": true,
+          "id": "ssh"
+        }
+      ],
+      "synced_folders": [
+        {
+          "src": "../data",
+          "dst": "/vagrant",
+          "disabled": true
+        }
+      ],
+      "providers": {
+        "virtualbox": {
+          "customize": [
+            [
+              "modifyvm",
+              ":id",
+              "--groups",
+              "/mcp-migration"
+            ]
+          ],
+          "name": "w1-k8s-1.36.2-mcpmig",
+          "cpus": 2,
+          "memory": 4096
+        }
+      },
+      "provisions": [
+        {
+          "type": "shell",
+          "path": "k8s_env_build.sh",
+          "args": [
+            "2",
+            "1.36"
+          ]
+        },
+        {
+          "type": "shell",
+          "path": "k8s_pkg_cfg.sh",
+          "args": [
+            "1.36.2-2.1",
+            "2.2.3-1~ubuntu.24.04~noble",
+            "W"
+          ]
+        },
+        {
+          "type": "shell",
+          "path": "worker_nodes.sh"
+        }
+      ],
+      "box": "sysnet4admin/Ubuntu-k8s",
+      "box_url": "https://box.kuberneteslab.dev/sysnet4admin/Ubuntu-k8s",
+      "hostname": "w1-k8s"
+    },
+    {
+      "name": "w2-k8s-1.36.2",
+      "networks": [
+        {
+          "type": "private_network",
+          "ip": "192.168.2.152"
+        },
+        {
+          "type": "forwarded_port",
+          "guest": 22,
+          "host": 60252,
+          "auto_correct": true,
+          "id": "ssh"
+        }
+      ],
+      "synced_folders": [
+        {
+          "src": "../data",
+          "dst": "/vagrant",
+          "disabled": true
+        }
+      ],
+      "providers": {
+        "virtualbox": {
+          "customize": [
+            [
+              "modifyvm",
+              ":id",
+              "--groups",
+              "/mcp-migration"
+            ]
+          ],
+          "name": "w2-k8s-1.36.2-mcpmig",
+          "cpus": 2,
+          "memory": 4096
+        }
+      },
+      "provisions": [
+        {
+          "type": "shell",
+          "path": "k8s_env_build.sh",
+          "args": [
+            "2",
+            "1.36"
+          ]
+        },
+        {
+          "type": "shell",
+          "path": "k8s_pkg_cfg.sh",
+          "args": [
+            "1.36.2-2.1",
+            "2.2.3-1~ubuntu.24.04~noble",
+            "W"
+          ]
+        },
+        {
+          "type": "shell",
+          "path": "worker_nodes.sh"
+        }
+      ],
+      "box": "sysnet4admin/Ubuntu-k8s",
+      "box_url": "https://box.kuberneteslab.dev/sysnet4admin/Ubuntu-k8s",
+      "hostname": "w2-k8s"
+    }
+  ]
+}

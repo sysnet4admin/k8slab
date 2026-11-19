@@ -5,8 +5,10 @@ k8slab은 강의와 책의 Vagrantfile을 그대로 읽어 VirtualBox에 쿠버�
 
 ## 범위
 
-- 대상은 sysnet4admin의 쿠버네티스 강의 저장소 4개와 『요즘 개발자를 위한 쿠버네티스/도커』(2판) 저장소다. 목록은
-  `tools/sync-fixtures.sh`의 `REPOS`에 있다. 앤서블 강의와 책은 대상이 아니다.
+- 대상은 sysnet4admin의 쿠버네티스 강의 저장소 4개, 『요즘 개발자를 위한 쿠버네티스/도커』(2판) 저장소, 연구 저장소
+  (`sysnet4admin/Research`)의 시험 클러스터다. 목록은 `tools/sync-fixtures.sh`의 `REPOS`에 있다. 앤서블 강의와 책은
+  대상이 아니다.
+- 공개하지 않은 Vagrantfile은 시험 자료로 복사하지 않고 `tools/check-dir.sh <폴더>`로 그 자리에서 비교한다.
 - Ubuntu box(`sysnet4admin/Ubuntu-k8s`)만 지원한다. CentOS box는 지원하지 않는다. 다른 OS를 더한다면 Rocky나 Fedora이고
   게스트 OS마다 다른 부분(고정 IP 설정)만 따로 둔다.
 - 하이퍼바이저는 VirtualBox만 지원한다.

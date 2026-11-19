@@ -15,7 +15,15 @@ k8slab은 강의와 책의 Vagrantfile을 그대로 읽어 VirtualBox에 쿠버�
 - 명령은 강의 자료가 사용하는 `up`, `halt`, `destroy`부터 만들고 `ssh`, `status`를 더한다. 동사는 베이그런트와 같게 둔다.
   수강생이 영상의 `vagrant up`에서 프로그램 이름만 바꾸면 되게 하기 위해서다.
 
-## Vagrantfile 해석
+## 설정 파일
+
+- k8slab의 설정 파일은 k8slabfile이다. 베이그런트와 Vagrantfile은 중장기적으로 신뢰하기 어려워 언젠가 없앨 대상이다.
+  Vagrantfile 해석은 저장소들이 k8slabfile로 옮겨 가는 동안만 사용하는 호환 기능이다.
+- 폴더에 k8slabfile과 Vagrantfile이 모두 있으면 k8slabfile을 읽는다. 둘 중 1개만 있으면 그 파일을 읽는다.
+- 내부 모델은 베이그런트의 개념(provider, forwarded_port 등)이 아니라 k8slab의 개념(노드, IP, SSH 포트, 디스크, 프로비저닝)으로
+  둔다. Vagrantfile은 이 모델로 바꿔서 읽는다. 그래야 Vagrantfile 해석을 지워도 나머지가 그대로 남는다.
+
+## Vagrantfile 해석(호환용)
 
 - `src/vagrantfile/`는 Ruby 전체가 아니라 대상 Vagrantfile이 사용하는 문법만 해석한다(변수, 문자열 치환, 범위 잘라내기,
   `each` 반복, `if`, 해시, `` `uname -m` ``).

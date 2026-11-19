@@ -9,11 +9,18 @@ k8slab은 강의와 책의 Vagrantfile을 그대로 읽어 VirtualBox에 쿠버�
   (`sysnet4admin/Research`)의 시험 클러스터다. 목록은 `tools/sync-fixtures.sh`의 `REPOS`에 있다. 앤서블 강의와 책은
   대상이 아니다.
 - 공개하지 않은 Vagrantfile은 시험 자료로 복사하지 않고 `tools/check-dir.sh <폴더>`로 그 자리에서 비교한다.
-- Ubuntu box(`sysnet4admin/Ubuntu-k8s`)만 지원한다. CentOS box는 지원하지 않는다. 다른 OS를 더한다면 Rocky나 Fedora이고
-  게스트 OS마다 다른 부분(고정 IP 설정)만 따로 둔다.
+- Ubuntu box(`sysnet4admin/Ubuntu-k8s`)만 지원한다. CentOS box는 지원하지 않는다. 다른 OS가 필요해지면 그때 Rocky나
+  Fedora를 더한다.
 - 하이퍼바이저는 VirtualBox만 지원한다.
-- 명령은 강의 자료가 사용하는 `up`, `halt`, `destroy`부터 만들고 `ssh`, `status`를 더한다. 동사는 베이그런트와 같게 둔다.
-  수강생이 영상의 `vagrant up`에서 프로그램 이름만 바꾸면 되게 하기 위해서다.
+- 하위 명령과 옵션은 베이그런트와 같게 둔다. 수강생은 영상의 `vagrant up`에서, 연구 하네스는 스크립트의 `vagrant`에서
+  프로그램 이름만 바꾸면 되게 하기 위해서다.
+
+## 만드는 범위
+
+- 지금 목적(강의와 책, 연구 시험 클러스터)에 필요한 것만 만든다. 새 목적이 생기면 그때 이 저장소에 기능을 더한다. 미리
+  일반화하지 않는다(2026-11-19 저자 판정).
+- 첫 버전의 명령은 `up`, `halt`, `destroy`, `ssh`(`-c` 포함), `status`, `snapshot save/restore/list`, `convert`(Vagrantfile을
+  k8slabfile로 바꾼다)다.
 
 ## 설정 파일
 
